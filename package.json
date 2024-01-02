@@ -16,7 +16,8 @@
     "path": "^0.12.7",
     "socket.io": "^4.7.2",
     "superagent": "^8.1.2",
-    "url": "^0.11.3"
+    "url": "^0.11.3",
+    "vercel": "^33.0.1"
   },
   "engines": {
     "node": "18.x"
