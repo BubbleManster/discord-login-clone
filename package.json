@@ -19,7 +19,7 @@
     "url": "^0.11.3"
   },
   "engines": {
-    "node": "20.10.0"
+    "node": "18.x"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
