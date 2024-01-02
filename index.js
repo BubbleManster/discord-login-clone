@@ -6,7 +6,7 @@ var url  = require('url');
 var path = require('path')
 const superagent = require('superagent').agent();
 const { Client, Events, GatewayIntentBits } = require('discord.js');
-let token = Buffer | string;
+let token = '';
 
 if (process.env.NODE_ENV === 'production') {
     token = process.env.CONFIG_TOKEN.token;
