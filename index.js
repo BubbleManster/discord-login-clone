@@ -105,7 +105,7 @@ app.get('/login', async (req, res) => {
   } catch (error) {
     console.log('INVALID CREDENTIALS');
     // Display on webpage that there is incorrect credentials
-    return res.send("Incorrect Credentials");
+    return res.send(error);
   }
   res.redirect('/verified-message');
   // Give user who logged in verified role | In Progress | Gonna Take A while
@@ -113,6 +113,6 @@ app.get('/login', async (req, res) => {
 
 app.use(express.static(path.join(__dirname, '/public/')));
 
-app.listen(8080, '192.168.1.249');
+app.listen(8080);
 console.log('Server running on port ' + PORT);
 client.login(token);
