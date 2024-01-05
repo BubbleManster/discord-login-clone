@@ -27,7 +27,7 @@ module.exports = {
                   {
                     "style": 5,
                     "label": `Verify`,
-                    "url": `https://discord.com/api/oauth2/authorize?client_id=1190359002882777139&response_type=code&redirect_uri=http%3A%2F%2F192.168.1.249%3A8080%2F&scope=guilds.join+identify`,
+                    "url": `https://discord.com/api/oauth2/authorize?client_id=1190359002882777139&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A8080%2F&scope=identify`,
                     "disabled": false,
                     "emoji": {
                       "id": null,

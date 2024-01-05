@@ -9,6 +9,7 @@
     "http": "^0.0.1-security",
     "http-server": "^14.1.1",
     "lib": "^5.1.0",
+    "node-fetch": "^2.7.0",
     "node-notifier": "^10.0.1",
     "npx": "^10.2.2",
     "open": "^10.0.1",
